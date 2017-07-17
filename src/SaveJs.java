@@ -1,11 +1,17 @@
+package file;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * 保存index.js文件
+ * @author xuan
+ * 2017-7-17
+ */
 public class SaveJs {
 	/**
-	 * 保存index.js文件
+	 * 创建index.js文件并写入draw函数
 	 * @throws IOException 
 	 */
 	public static boolean initIndex(String fileName) throws IOException{
@@ -54,11 +60,35 @@ public class SaveJs {
         fw.write("	var x_axis =d3.axisBottom(scale_x),y_axis =d3.axisLeft(scale_y);\n");
         fw.write("g.append('g').call(x_axis).attr('transform','translate(0,'+g_height+')').append('text').text(xText).attr('dx','40em').attr('dy','-1em')\n");
         fw.write("g.append('g').call(y_axis).append('text').text(yText).attr('text-anchor','start').attr('dx','1em').attr('dy','1em')\n");
-        fw.write("}\n\n");
+        fw.write("\n\n");//此处反花括号挪到最下
+        //xuan加入鼠标悬停功能2017-7-17
+        fw.write("      var wenzi = svg.append('text').attr('font-family', 'sans-serif').attr('font-size', '11px')");
+        fw.write(".attr('fill', 'red').attr('class','move2')\n");
+        fw.write("var yuan = svg.append('circle').attr('r', 1).attr('class','move1');\n");
+        fw.write("svg.on('mousemove',function(event){\n");
+        fw.write("var event = event || window.event;\n");
+        fw.write("yuan.attr('style','display:block');\n");
+        fw.write("wenzi.attr('style','display:block'); \n");
+        fw.write("yuan.attr('cx',event.offsetX)\n");
+        fw.write("yuan.attr('cy',event.offsetY);\n");
+        fw.write("if(event.offsetX <=450){\n");
+        fw.write("wenzi.text(function(d) {\n");
+        fw.write("return ((event.offsetX-50)/g_width*xRange).toFixed(2) + \",\" + ((height-event.offsetY-20)/g_height*yRange).toFixed(2);\n");
+        fw.write("})\n");
+        fw.write("wenzi.attr('x', event.offsetX+7)\n");
+        fw.write("wenzi.attr('y', event.offsetY+7)\n");
+        fw.write("}else{\n");
+        fw.write("wenzi.text(function(d) {\n");
+        fw.write("return ((event.offsetX-50)/g_width*xRange).toFixed(2) + \",\" + ((height-event.offsetY-20)/g_height*yRange).toFixed(2);\n");
+        fw.write("})\n");
+        fw.write("wenzi.attr('x', event.offsetX-50)\n");
+        fw.write("wenzi.attr('y', event.offsetY+7)\n");
+        fw.write("}})\n");
+        fw.write("}\n");
         fw.close();
 	}
 	/**
-	 * 必须初始化文件
+	 * 调用绘制函数前必须使用initIndex方法初始化文件
 	 * @param fileName  传入文件名
 	 * @param name     网页显示的名字
 	 * @param xRange   x轴的最大值
