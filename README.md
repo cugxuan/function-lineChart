@@ -36,6 +36,9 @@ SaveJs.drawLineChart("js/index.js", "进程AEMgr", 60, 100, "时间(60分)", "CP
 SaveJs.drawLineChart("js/index.js", "进程AEMgr", 60, 100, "时间(60分)", "CPU使用率(%)", data, 3);
 ```
 
+## 加入了鼠标悬停显示坐标
+通过画圆和打印坐标值，实时显示坐标图中的坐标，通过x，y的最大值来进行比例计算得到。
+
 ## 在demo中可以进行调用
 src
    - demo.java
